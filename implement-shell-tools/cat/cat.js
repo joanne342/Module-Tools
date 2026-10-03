@@ -1,52 +1,35 @@
 const fs = require("fs");
-const path = require("path");
 
 const parts = process.argv.slice(2);
 
 let option = null;
-let pattern;
+let files = [];
 
-if (parts.length >= 1 && (parts[0] === "-n" || parts[0] === "-b")) {
+// Check for -n or -b
+if (parts[0] === "-n" || parts[0] === "-b") {
     option = parts[0];
-    pattern = parts[1];
+    files = parts.slice(1);
 } else {
-    pattern = parts[0];
+    files = parts;
 }
 
-if (!pattern) {
+if (files.length === 0) {
     console.log("cat: missing file operand");
     process.exit();
-}
-
-const directory = path.dirname(pattern);
-const filenamePattern = path.basename(pattern);
-
-let files;
-
-if (filenamePattern.includes("*")) {
-    const [before, after] = filenamePattern.split("*");
-
-    files = fs.readdirSync(directory)
-        .filter(file => file.startsWith(before) && file.endsWith(after))
-        .map(file => path.join(directory, file))
-        .sort();
-} else {
-    const fullPath = path.join(directory, filenamePattern);
-
-    if (!fs.existsSync(fullPath)) {
-        console.log(`cat: ${pattern}: No such file or directory`);
-        process.exit();
-    }
-
-    files = [fullPath];
 }
 
 let lineNumber = 1;
 
 for (const filename of files) {
+    if (!fs.existsSync(filename)) {
+        console.log(`cat: ${filename}: No such file or directory`);
+        continue;
+    }
+
     const content = fs.readFileSync(filename, "utf8");
     const lines = content.split(/\r?\n/);
 
+    // Don't treat the final newline as an extra line.
     if (lines[lines.length - 1] === "") {
         lines.pop();
     }
