@@ -5,7 +5,6 @@ const parts = process.argv.slice(2);
 let option = null;
 let files = [];
 
-// Check for -n or -b
 if (parts[0] === "-n" || parts[0] === "-b") {
     option = parts[0];
     files = parts.slice(1);
@@ -29,7 +28,6 @@ for (const filename of files) {
     const content = fs.readFileSync(filename, "utf8");
     const lines = content.split(/\r?\n/);
 
-    // Don't treat the final newline as an extra line.
     if (lines[lines.length - 1] === "") {
         lines.pop();
     }
