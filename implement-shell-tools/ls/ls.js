@@ -7,7 +7,6 @@ let path = ".";
 
 for (const arg of args) {
   if (arg === "-1") {
-    // One entry per line is the required format.
   } else if (arg === "-a") {
     showAll = true;
   } else {
