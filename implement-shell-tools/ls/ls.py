@@ -1,3 +1,4 @@
+```python
 import argparse
 import os
 
@@ -8,6 +9,7 @@ parser = argparse.ArgumentParser(
 
 parser.add_argument(
     "-1",
+    "--one",
     action="store_true",
     help="List one file per line",
 )
@@ -28,7 +30,6 @@ args = parser.parse_args()
 
 if not args.paths:
     args.paths = ["."]
-
 
 for path in args.paths:
     if os.path.isdir(path):
@@ -53,3 +54,4 @@ for path in args.paths:
 
     else:
         print(path)
+```
