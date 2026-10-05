@@ -1,4 +1,3 @@
-```python
 import argparse
 import os
 
@@ -73,4 +72,4 @@ for path in directories:
             print(file)
     else:
         print("  ".join(directory_files))
-```
+
