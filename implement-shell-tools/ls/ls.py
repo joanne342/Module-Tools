@@ -1,3 +1,4 @@
+```python
 import argparse
 import os
 
@@ -30,27 +31,46 @@ args = parser.parse_args()
 if not args.paths:
     args.paths = ["."]
 
+files = []
+directories = []
+
 for path in args.paths:
     if os.path.isdir(path):
-        files = os.listdir(path)
-
-        if not args.a:
-            files = [
-                name for name in files
-                if not name.startswith(".")
-            ]
-
-        files.sort()
-
-        if args.a:
-            files = [".", ".."] + files
-
-        if args.one:
-            for file in files:
-                print(file)
-        else:
-            print("  ".join(files))
-
+        directories.append(path)
     else:
-        print(path)
+        files.append(path)
 
+# Print files first
+if files:
+    if args.one:
+        for file in files:
+            print(file)
+    else:
+        print("  ".join(files))
+
+# Print directories
+for path in directories:
+    if files:
+        print()
+
+    print(f"{path}:")
+
+    directory_files = os.listdir(path)
+
+    if not args.a:
+        directory_files = [
+            file for file in directory_files
+            if not file.startswith(".")
+        ]
+
+    directory_files.sort()
+
+    if args.a:
+        directory_files = [".", ".."] + directory_files
+
+    if args.one:
+        for file in directory_files:
+            print(file)
+    else:
+        print("  ".join(directory_files))
+```
