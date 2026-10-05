@@ -1,4 +1,3 @@
-```python
 import argparse
 import os
 
@@ -54,4 +53,4 @@ for path in args.paths:
 
     else:
         print(path)
-```
+
